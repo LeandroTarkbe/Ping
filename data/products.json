@@ -1,0 +1,44 @@
+[
+  {
+    "id": "a1b2c3d4-e5f6-7g8h-9i10-j11k12l13m14",
+    "titulo": "Monitor LED 24 pulgadas",
+    "descripcion": "Monitor LED Full HD de 24 pulgadas, ideal para gaming y trabajo.",
+    "codigo": "MON24FHD",
+    "precio": 150,
+    "status": true,
+    "stock": 50,
+    "categoria": "Electrónica",
+    "thumbnails": [
+      "https://example.com/images/monitor1.jpg",
+      "https://example.com/images/monitor2.jpg"
+    ]
+  },
+  {
+    "id": "n1o2p3q4-r5s6-t7u8-v9w10-x11y12z13a14",
+    "titulo": "Teclado mecánico RGB",
+    "descripcion": "Teclado mecánico con retroiluminación RGB y switches táctiles.",
+    "codigo": "TECMRGB01",
+    "precio": 80,
+    "status": true,
+    "stock": 100,
+    "categoria": "Periféricos",
+    "thumbnails": [
+      "https://example.com/images/teclado1.jpg",
+      "https://example.com/images/teclado2.jpg"
+    ]
+  },
+  {
+    "id": "o1p2q3r4-s5t6-u7v8-w9x10-y11z12a13b14",
+    "titulo": "Mouse inalámbrico",
+    "descripcion": "Mouse ergonómico con conexión inalámbrica de 2.4 GHz.",
+    "codigo": "MOUWIRE01",
+    "precio": 25,
+    "status": true,
+    "stock": 200,
+    "categoria": "Periféricos",
+    "thumbnails": [
+      "https://example.com/images/mouse1.jpg",
+      "https://example.com/images/mouse2.jpg"
+    ]
+  }
+]
