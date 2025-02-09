@@ -1,31 +1,44 @@
-const express = require('express');
-const { readData, writeData } = require('../utils/fileHandler');
-const path = require('path');
+import express from 'express';
+import { readData, writeData } from '../utils/fileHandler.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { body, validationResult } from 'express-validator';
+
+// Configurar __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const cartRouter = express.Router();
 const cartsPath = path.join(__dirname, '../data/carts.json');
 let carts = readData(cartsPath);
 
 // Endpoint para crear un carrito
-cartRouter.post('/', (req, res) => {
-    const { id, products } = req.body;
+cartRouter.post(
+    '/',
+    [
+        body('products').isArray().withMessage('Los productos deben ser un array'),
+        body('products.*.id').isString().withMessage('Cada producto debe tener un ID válido'),
+        body('products.*.quantity').isInt({ min: 1 }).withMessage('La cantidad debe ser un número entero mayor a 0'),
+    ],
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
 
-    if (!id || !Array.isArray(products)) {
-        return res.status(400).json({ error: 'Los campos id y products (array) son obligatorios' });
+        const newCart = { id: uuidv4(), ...req.body };
+        carts.push(newCart);
+        writeData(cartsPath, carts);
+        res.status(201).json(newCart);
     }
-
-    carts.push({ id, products });
-    writeData(cartsPath, carts);
-
-    res.status(201).json({ message: 'Carrito creado', carts });
-});
+);
 
 // Endpoint para obtener el contenido de todos los carritos
 cartRouter.get('/', (req, res) => {
     res.status(200).json({ carts });
 });
 
-// Endpoint para realixar la lista de productos de un carrito
+// Endpoint para obtener la lista de productos de un carrito
 cartRouter.get('/:cid', (req, res) => {
     const { cid } = req.params;
     const cart = carts.find(c => c.id === cid);
@@ -58,4 +71,5 @@ cartRouter.post('/:cid/product/:pid', (req, res) => {
     res.status(200).json({ message: 'Producto agregado al carrito', cart });
 });
 
-module.exports = cartRouter;
+// Exportar correctamente en ES Modules
+export default cartRouter;

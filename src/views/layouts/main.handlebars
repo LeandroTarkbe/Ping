@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>Lista de Productos</h1>
+    <ul>
+        {{#each products}}
+            <li>{{this.name}} - {{this.price}}</li>
+        {{/each}}
+    </ul>
+</body>
+</html>
+
+{{!-- realTimeProducts.handlebars --}}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        
+        socket.on('updateProducts', (product) => {
+            const list = document.getElementById('product-list');
+            const item = document.createElement('li');
+            item.textContent = `${product.name} - ${product.price}`;
+            list.appendChild(item);
+        });
+        
+        socket.on('removeProduct', (productId) => {
+            const list = document.getElementById('product-list');
+            const items = list.getElementsByTagName('li');
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].dataset.id === productId) {
+                    list.removeChild(items[i]);
+                    break;
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Lista de Productos en Tiempo Real</h1>
+    <ul id="product-list">
+        {{#each products}}
+            <li data-id="{{this.id}}">{{this.name}} - {{this.price}}</li>
+        {{/each}}
+    </ul>
+</body>
+</html>

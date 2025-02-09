@@ -1,7 +1,12 @@
-const express = require('express');
-const { readData, writeData } = require('../utils/fileHandler');
-const path = require('path');
-const bcrypt = require('bcrypt');
+import express from 'express';
+import { readData, writeData } from '../utils/fileHandler.js';
+import path from 'path';
+import bcrypt from 'bcrypt';
+import { fileURLToPath } from 'url';
+
+// Configurar __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const userRouter = express.Router();
 const usersPath = path.join(__dirname, '../data/users.json');
@@ -9,7 +14,7 @@ let users = readData(usersPath);
 
 // Validar una contraseña
 const validatePassword = (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     return regex.test(password);
 };
 
@@ -65,4 +70,5 @@ userRouter.post('/login', async (req, res) => {
     res.status(200).json({ message: 'Inicio de sesión exitoso' });
 });
 
-module.exports = userRouter;
+// Exportar en ES Modules
+export default userRouter;

@@ -1,0 +1,26 @@
+<h1>Productos en Tiempo Real</h1>
+<ul id="productList">
+    {{#each products}}
+        <li data-id="{{this.id}}">{{this.name}} - ${{this.price}}</li>
+    {{/each}}
+</ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const productList = document.getElementById("productList");
+
+    socket.on("updateProducts", (product) => {
+        const newProduct = document.createElement("li");
+        newProduct.setAttribute("data-id", product.id);
+        newProduct.innerHTML = `${product.name} - $${product.price}`;
+        productList.appendChild(newProduct);
+    });
+
+    socket.on("removeProduct", (productId) => {
+        const productItem = document.querySelector(`[data-id='${productId}']`);
+        if (productItem) {
+            productItem.remove();
+        }
+    });
+</script>

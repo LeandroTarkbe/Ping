@@ -1,7 +1,12 @@
-const express = require('express');
-const { readData, writeData } = require('../utils/fileHandler');
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
+import express from 'express';
+import { readData, writeData } from '../utils/fileHandler.js';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+import { fileURLToPath } from 'url';
+
+// Configurar __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const productRouter = express.Router();
 const productsPath = path.join(__dirname, '../data/products.json');
@@ -23,7 +28,7 @@ productRouter.post('/', (req, res) => {
     }
 
     const newProduct = {
-        id: uuidv4(), // Generar ID único
+        id: uuidv4(),
         titulo,
         descripcion,
         codigo,
@@ -79,4 +84,5 @@ productRouter.delete('/:id', (req, res) => {
     res.status(200).json({ message: 'Producto eliminado', products });
 });
 
-module.exports = productRouter;
+// Exportar correctamente en ES Modules
+export default productRouter;
